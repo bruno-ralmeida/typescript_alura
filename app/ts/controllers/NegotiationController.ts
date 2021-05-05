@@ -2,6 +2,8 @@ class NegotiationController {
   private _inputDate: HTMLInputElement;
   private _inputQuantity: HTMLInputElement;
   private _inputValue: HTMLInputElement;
+  private _negotiations = new Negotiations();
+  private _negotiationsView = new NegotiationsView('#negotiations');
 
   constructor() {
     this._inputDate = <HTMLInputElement>document.querySelector('#date');
@@ -16,6 +18,8 @@ class NegotiationController {
       parseInt(this._inputQuantity.value),
       parseFloat(this._inputValue.value)
     );
-    console.log(negotiation);
+
+    this._negotiations.add(negotiation);
+    this._negotiationsView.update(this._negotiations);
   }
 }

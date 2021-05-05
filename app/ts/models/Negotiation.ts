@@ -5,19 +5,19 @@ class Negotiation {
     private _value: number
   ) {}
 
-  get date() {
+  get date(): Date {
     return this._date;
   }
 
-  get quantity() {
+  get quantity(): number {
     return this._quantity;
   }
 
-  get value() {
+  get value(): number {
     return this._value;
   }
 
-  get volume() {
+  get volume(): number {
     return this._quantity * this._value;
   }
 }
