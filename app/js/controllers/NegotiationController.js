@@ -3,13 +3,13 @@ class NegotiationController {
         this._negotiations = new Negotiations();
         this._negotiationsView = new NegotiationsView('#negotiations');
         this._messageView = new MessageView('#message');
-        this._inputDate = document.querySelector('#date');
-        this._inputQuantity = document.querySelector('#quantity');
-        this._inputValue = document.querySelector('#value');
+        this._inputDate = $('#date');
+        this._inputQuantity = $('#quantity');
+        this._inputValue = $('#value');
     }
     add(e) {
         e.preventDefault();
-        const negotiation = new Negotiation(new Date(this._inputDate.value.replace(/-/g, ',')), parseInt(this._inputQuantity.value), parseFloat(this._inputValue.value));
+        const negotiation = new Negotiation(new Date(this._inputDate.val().toString().replace(/-/g, ',')), parseInt(this._inputQuantity.val().toString()), parseFloat(this._inputValue.val().toString()));
         this._negotiations.add(negotiation);
         this._negotiationsView.update(this._negotiations);
         this._messageView.update('Negotiation added successfully!');
