@@ -1,5 +1,6 @@
 import { MessageView, NegotiationsView } from '../views/index';
 import { Negotiation, Negotiations } from '../models/index';
+import { DOMInject } from '../helpers/decorators/index';
 
 enum Weekday {
   SUNDAY = 0,
@@ -12,17 +13,20 @@ enum Weekday {
 }
 
 export class NegotiationController {
+  @DOMInject('#date')
   private _inputDate: JQuery;
+
+  @DOMInject('#quantity')
   private _inputQuantity: JQuery;
+
+  @DOMInject('#value')
   private _inputValue: JQuery;
   private _negotiations = new Negotiations();
   private _negotiationsView = new NegotiationsView('#negotiations', true);
   private _messageView = new MessageView('#message', true);
 
   constructor() {
-    this._inputDate = $('#date');
-    this._inputQuantity = $('#quantity');
-    this._inputValue = $('#value');
+    this._negotiationsView.update(this._negotiations);
   }
 
   add(e: Event) {
