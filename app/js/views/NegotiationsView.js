@@ -1,15 +1,15 @@
-System.register(["./View"], function (exports_1, context_1) {
+System.register(["./index"], function (exports_1, context_1) {
     "use strict";
-    var View_1, NegotiationsView;
+    var index_1, NegotiationsView;
     var __moduleName = context_1 && context_1.id;
     return {
         setters: [
-            function (View_1_1) {
-                View_1 = View_1_1;
+            function (index_1_1) {
+                index_1 = index_1_1;
             }
         ],
         execute: function () {
-            NegotiationsView = class NegotiationsView extends View_1.View {
+            NegotiationsView = class NegotiationsView extends index_1.View {
                 template(negotiations) {
                     return `
       <table class="table table-hover table-bordered">
