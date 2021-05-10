@@ -25,5 +25,6 @@ export function runtimeLog(isSecond: boolean = false) {
       console.log('-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-');
       return value;
     };
+    return descriptor;
   };
 }

@@ -1,6 +1,7 @@
 import { MessageView, NegotiationsView } from '../views/index';
 import { Negotiation, Negotiations } from '../models/index';
-import { DOMInject } from '../helpers/decorators/index';
+import { DOMInject, throttle } from '../helpers/decorators/index';
+import { NegotiationService } from '../services/index';
 
 enum Weekday {
   SUNDAY = 0,
@@ -25,10 +26,13 @@ export class NegotiationController {
   private _negotiationsView = new NegotiationsView('#negotiations', true);
   private _messageView = new MessageView('#message', true);
 
+  private _negotiationService = new NegotiationService();
+
   constructor() {
     this._negotiationsView.update(this._negotiations);
   }
 
+  @throttle()
   add(e: Event) {
     e.preventDefault();
     let date = new Date(this._inputDate.val().toString().replace(/-/g, ','));
@@ -46,5 +50,20 @@ export class NegotiationController {
     this._negotiations.add(negotiation);
     this._negotiationsView.update(this._negotiations);
     this._messageView.update('Negotiation added successfully!');
+  }
+
+  @throttle()
+  importData() {
+    function isOk(res: Response) {
+      if (!res.ok) throw new Error(res.statusText);
+      return res;
+    }
+
+    this._negotiationService.importFromApi(isOk).then((data) => {
+      data.forEach((n) => {
+        this._negotiations.add(n);
+        this._negotiationsView.update(this._negotiations);
+      });
+    });
   }
 }
