@@ -2,7 +2,7 @@ import { MessageView, NegotiationsView } from '../views/index';
 import { Negotiation, Negotiations } from '../models/index';
 import { DOMInject, throttle } from '../helpers/decorators/index';
 import { NegotiationService } from '../services/index';
-
+import { toPrintConsole } from '../helpers/index';
 enum Weekday {
   SUNDAY = 0,
   MONDAY = 1,
@@ -48,22 +48,33 @@ export class NegotiationController {
     );
 
     this._negotiations.add(negotiation);
+    toPrintConsole(negotiation, this._negotiations);
     this._negotiationsView.update(this._negotiations);
     this._messageView.update('Negotiation added successfully!');
   }
 
   @throttle()
-  importData() {
+  async importData() {
     function isOk(res: Response) {
       if (!res.ok) throw new Error(res.statusText);
       return res;
     }
 
-    this._negotiationService.importFromApi(isOk).then((data) => {
-      data.forEach((n) => {
-        this._negotiations.add(n);
+    const pendingNegotiations = await this._negotiationService.importFromApi(
+      isOk
+    );
+    const obtainedNegotiations = this._negotiations.list();
+
+    pendingNegotiations
+      .filter(
+        (notImported) =>
+          !obtainedNegotiations.some((imported) =>
+            notImported.isEqual(imported)
+          )
+      )
+      .forEach((obtainedNegotiations) => {
+        this._negotiations.add(obtainedNegotiations);
         this._negotiationsView.update(this._negotiations);
       });
-    });
   }
 }
